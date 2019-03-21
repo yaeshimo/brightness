@@ -34,7 +34,6 @@ func (es *examples) Sprint() string {
 	return s
 }
 
-// Name string for specify command name
 func makeUsage(w *io.Writer) func() {
 	var eg = &examples{
 		{
@@ -46,7 +45,7 @@ func makeUsage(w *io.Writer) func() {
 			e: Name + " -set max",
 		},
 		{
-			c: "Increment brightness 10%",
+			c: `Increment brightness 10%`,
 			e: Name + " -inc",
 		},
 	}
@@ -83,8 +82,8 @@ func init() {
 	flag.BoolVar(&opt.getmax, "getmax", false, "Value of max brightness")
 
 	flag.StringVar(&opt.set, "set", "", "Set brightness")
-	flag.BoolVar(&opt.inc, "inc", false, "Increment brightness 10%")
-	flag.BoolVar(&opt.dec, "dec", false, "Decrement brightness 10%")
+	flag.BoolVar(&opt.inc, "inc", false, `Increment brightness 10%`)
+	flag.BoolVar(&opt.dec, "dec", false, `Decrement brightness 10%`)
 }
 
 func run() error {
