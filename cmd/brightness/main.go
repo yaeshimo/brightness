@@ -16,7 +16,7 @@ import (
 
 const (
 	Name    = "brightness"
-	Version = "0.0.0"
+	Version = "0.0.1"
 )
 
 // example and comment for print usage
