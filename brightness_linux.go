@@ -52,7 +52,7 @@ func readUint(file string) (uint, error) {
 	return uint(i), err
 }
 
-// "b.root/*"
+// from "b.root/*"
 func (b *brightness) candidates() ([]string, error) {
 	var candidates []string
 	fis, err := ioutil.ReadDir(b.root)
@@ -123,14 +123,11 @@ func (b *brightness) Set(ui uint) error {
 	if ui > max {
 		return errors.New("requested brightness is over the max")
 	}
-
-	// if failed after trunc then how fix the brightness? it is can be?
 	f, err := os.OpenFile(filepath.Join(b.device, b.current), os.O_WRONLY|os.O_TRUNC, 0)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
-
 	_, err = f.WriteString(strconv.FormatUint(uint64(ui), 10))
 	return err
 }

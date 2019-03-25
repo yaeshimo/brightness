@@ -1,7 +1,6 @@
-// Package brightness provides brightness control.
 package brightness
 
-import "errors"
+// TODO: remove max brihtness is too small
 
 // Append?
 //
@@ -13,7 +12,6 @@ import "errors"
 //
 // set directly
 // Set(uint) error
-//
 type Brightness interface {
 	// get brightness
 	Current() (uint, error)
@@ -29,18 +27,6 @@ var internal Brightness
 func Current() (uint, error) { return internal.Current() }
 func Max() (uint, error)     { return internal.Max() }
 
-// always returns uint is over the 10
-func max() (uint, error) {
-	max, err := internal.Max()
-	if err != nil {
-		return 0, err
-	}
-	if max < 10 {
-		return 0, errors.New("max brightness is too little")
-	}
-	return max, nil
-}
-
 func SetMax() error {
 	max, err := internal.Max()
 	if err != nil {
@@ -50,17 +36,24 @@ func SetMax() error {
 }
 
 func SetMid() error {
-	max, err := max()
+	max, err := internal.Max()
 	if err != nil {
 		return err
 	}
-	return internal.Set((max / 10) * 5)
+	want := max / 2
+	if want == 0 && max == 1 {
+		want = 1
+	}
+	return internal.Set(want)
 }
 
 func SetMin() error {
-	max, err := max()
+	max, err := internal.Max()
 	if err != nil {
 		return err
+	}
+	if max < 10 {
+		return internal.Set(1)
 	}
 	return internal.Set(max / 10)
 }
@@ -69,9 +62,8 @@ func SetMin() error {
 // setPercent
 // (Inc|Dec)10Percent() to (Inc|Dec)Percent(uint)
 
-// if over the max then to max
 func Inc10Percent() error {
-	max, err := max()
+	max, err := internal.Max()
 	if err != nil {
 		return err
 	}
@@ -79,16 +71,20 @@ func Inc10Percent() error {
 	if err != nil {
 		return err
 	}
-	want := current + (max / 10)
+	var want uint
+	if max < 10 {
+		want = current + 1
+	} else {
+		want = current + max/10
+	}
 	if want > max {
 		want = max
 	}
 	return internal.Set(want)
 }
 
-// if under the 10% then to 10%
 func Dec10Percent() error {
-	max, err := max()
+	max, err := internal.Max()
 	if err != nil {
 		return err
 	}
@@ -96,16 +92,18 @@ func Dec10Percent() error {
 	if err != nil {
 		return err
 	}
-	tenPercent := max / 10
-
-	// case overflow
-	if current < tenPercent {
-		return nil
-	}
-
-	want := current - tenPercent
-	if want < tenPercent {
-		want = tenPercent
+	var want uint
+	if max < 10 {
+		if current <= 1 {
+			return nil
+		}
+		want = current - 1
+	} else {
+		tenPercent := max / 10
+		if current <= tenPercent {
+			return nil
+		}
+		want = current - tenPercent
 	}
 	return internal.Set(want)
 }

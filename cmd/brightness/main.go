@@ -110,44 +110,49 @@ func run() error {
 	switch flag.NFlag() {
 	case 0:
 		// TODO: imple State()
-		return errors.New("TODO: print state of devices and brightness")
+		return errors.New("TODO: print state of brightness")
 	case 1:
-		wrap := func(f func() (uint, error)) error {
-			i, err := f()
-			if err != nil {
-				return err
-			}
-			_, err = fmt.Printf("%d\n", i)
-			return err
-		}
-		switch {
-		case opt.get:
-			return wrap(brightness.Current)
-		case opt.getmax:
-			return wrap(brightness.Max)
-		}
-
-		switch {
-		case opt.set != "":
-			switch opt.set {
-			case "max":
-				return brightness.SetMax()
-			case "mid":
-				return brightness.SetMid()
-			case "min":
-				return brightness.SetMin()
-			default:
-				return fmt.Errorf("invalid arguments %q", opt.set)
-			}
-		case opt.inc:
-			return brightness.Inc10Percent()
-		case opt.dec:
-			return brightness.Dec10Percent()
-		default:
-			return errors.New("unreachable")
-		}
+		// pass
+		// TODO: if only to pick device then return error?
+	case 2:
+		// TODO: pick device?
 	default:
 		return fmt.Errorf("too many specified flags")
+	}
+
+	wrap := func(f func() (uint, error)) error {
+		i, err := f()
+		if err != nil {
+			return err
+		}
+		_, err = fmt.Printf("%d\n", i)
+		return err
+	}
+	switch {
+	case opt.get:
+		return wrap(brightness.Current)
+	case opt.getmax:
+		return wrap(brightness.Max)
+	}
+
+	switch {
+	case opt.set != "":
+		switch opt.set {
+		case "max":
+			return brightness.SetMax()
+		case "mid":
+			return brightness.SetMid()
+		case "min":
+			return brightness.SetMin()
+		default:
+			return fmt.Errorf("invalid arguments %q", opt.set)
+		}
+	case opt.inc:
+		return brightness.Inc10Percent()
+	case opt.dec:
+		return brightness.Dec10Percent()
+	default:
+		return errors.New("unreachable")
 	}
 }
 
