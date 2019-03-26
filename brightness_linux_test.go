@@ -26,21 +26,20 @@ func TestSetBrightness(t *testing.T) {
 	}
 
 	var tests = []struct {
-		current uint
-		max     uint
-		set     uint
+		current, max uint
+		set          uint
 	}{
-		{current: 100, max: 100, set: 30},
-		{current: 100, max: 100, set: 10},
-		{current: 9, max: 9, set: 8},
+		{100, 100, 30},
+		{100, 100, 10},
+		{9, 9, 8},
 
-		// permit?
-		{current: 100, max: 100, set: 0},
-		{current: 100, max: 100, set: 1},
-		{current: 9, max: 9, set: 0},
+		// permit small set
+		{100, 100, 0},
+		{100, 100, 1},
+		{9, 9, 0},
 
 		// want error
-		{current: 100, max: 100, set: 101},
+		{100, 100, 101},
 	}
 
 	for _, test := range tests {
@@ -61,11 +60,13 @@ func TestSetBrightness(t *testing.T) {
 		writeUint(subdir, defaultBaseMax, test.max)
 
 		if err := b.Set(test.set); err != nil {
-			// case of want error
+			// case want error
 			if test.set > test.max {
 				continue
 			}
 			t.Fatal(err)
+		} else if test.set > test.max {
+			t.Fatal("want error but nil")
 		}
 		out, err := b.Current()
 		if err != nil {
