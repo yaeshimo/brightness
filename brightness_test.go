@@ -1,6 +1,7 @@
 package brightness
 
 import (
+	"errors"
 	"testing"
 )
 
@@ -15,6 +16,11 @@ type mock struct {
 func (m *mock) Current() (uint, error) { return m.current, m.err }
 func (m *mock) Max() (uint, error)     { return m.max, m.err }
 func (m *mock) Set(ui uint) error      { m.current = ui; return m.err }
+
+// TODO: consider
+func (m *mock) ListDevices() ([]string, error) { return nil, errors.New("not implemented") }
+func (m *mock) PickDevice(string) error        { return errors.New("not implemented") }
+func (m *mock) PickDeviceIndex(int) error      { return errors.New("not implemented") }
 
 type tests []struct {
 	m    *mock

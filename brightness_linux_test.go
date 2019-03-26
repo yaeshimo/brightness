@@ -56,13 +56,9 @@ func TestSetBrightness(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		b := &brightness{
-			root:    rootdir,
-			current: "brightness",
-			max:     "max_brightness",
-		}
-		writeUint(subdir, b.current, test.current)
-		writeUint(subdir, b.max, test.max)
+		b := &brightness{root: rootdir}
+		writeUint(subdir, defaultBaseCurrent, test.current)
+		writeUint(subdir, defaultBaseMax, test.max)
 
 		if err := b.Set(test.set); err != nil {
 			// case of want error

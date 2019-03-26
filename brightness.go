@@ -1,18 +1,17 @@
 package brightness
 
-// TODO: remove max brihtness is too small
-
 // Append?
-//
-// list target devices
-// ListDevices() []string
-//
-// specify target device
-// PickDevice(target string) error
 //
 // set directly
 // Set(uint) error
 type Brightness interface {
+	// list target devices
+	ListDevices() ([]string, error)
+
+	// pick a target device
+	PickDevice(string) error
+	PickDeviceIndex(int) error
+
 	// get brightness
 	Current() (uint, error)
 	Max() (uint, error)
