@@ -1,31 +1,33 @@
 # brightness
 
-Control brightness.
+Provides brightness control.
+
+akari is tool for control brightness from cli.
 
 ## Usage
 
 Display help
 
 ```sh
-brightness -help
+akari -help
 ```
 
 Get value of current brightness
 
 ```sh
-brightness -get
+akari -get
 ```
 
 Set to max
 
 ```sh
-brightness -set max
+akari -set max
 ```
 
 Increment 10%
 
 ```sh
-brightness -inc
+akari -inc
 ```
 
 ## Requirements
@@ -34,14 +36,14 @@ brightness -inc
   - Permission of read `/sys/class/backlight/*/max_brightness`
   - Permission of read write `/sys/class/backlight/*/brightness`
 
-## Supported environments
+## Available
 
 - Arch Linux
 
 ## Installation
 
 ```sh
-go get github.com/yaeshimo/brightness/cmd/brightness
+go get github.com/yaeshimo/brightness/cmd/akari
 ```
 
 ## License
