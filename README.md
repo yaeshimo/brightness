@@ -30,15 +30,15 @@ Increment 10%
 akari -inc
 ```
 
+## Available
+
+- Arch Linux
+
 ## Requirements
 
 - Linux
   - Permission of read `/sys/class/backlight/*/max_brightness`
   - Permission of read write `/sys/class/backlight/*/brightness`
-
-## Available
-
-- Arch Linux
 
 ## Installation
 
