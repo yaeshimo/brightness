@@ -1,6 +1,6 @@
 # brightness
 
-Provides brightness control.
+Provides brightness control and cli tool akari.
 
 akari is tool for control brightness from cli.
 
